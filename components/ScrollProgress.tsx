@@ -14,7 +14,7 @@ export function ScrollProgress() {
       raf = 0
       const max = document.documentElement.scrollHeight - window.innerHeight
       const p = max > 0 ? Math.min(1, window.scrollY / max) : 0
-      el.style.width = `${(p * 100).toFixed(2)}%`
+      el.style.transform = `scaleX(${String(p)})`
     }
     const onScroll = () => {
       if (raf) return
@@ -33,7 +33,10 @@ export function ScrollProgress() {
 
   return (
     <div className="fixed top-0 left-0 right-0 z-[60] h-[2px] bg-transparent pointer-events-none">
-      <div ref={ref} className="h-full bg-eblue w-0" />
+      <div
+        ref={ref}
+        className="h-full origin-left scale-x-0 bg-eblue will-change-transform"
+      />
     </div>
   )
 }

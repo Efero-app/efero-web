@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useRef } from 'react'
 
-export function AnimatedSection({ children, className = '', delay = 0, eager = false }: {
+export function AnimatedSection({ children, className = '', eager = false }: {
   children: React.ReactNode
   className?: string
   delay?: number
@@ -16,11 +16,15 @@ export function AnimatedSection({ children, className = '', delay = 0, eager = f
     const el = ref.current
     if (!el) return
 
+    // Scroll-reveal adds no value on narrow screens and can make already-rendered
+    // copy look as if it is still loading during a fast touch scroll.
+    if (window.matchMedia('(max-width: 767px)').matches) return
+
     const show = () => el.classList.add('visible')
 
     // Already in (or near) viewport on mount — show immediately
     const rect = el.getBoundingClientRect()
-    if (rect.top < window.innerHeight * 0.92) {
+    if (rect.top < window.innerHeight * 1.08) {
       show()
       return
     }
@@ -32,7 +36,7 @@ export function AnimatedSection({ children, className = '', delay = 0, eager = f
           observer.disconnect()
         }
       },
-      { rootMargin: '0px 0px -8% 0px', threshold: 0.08 }
+      { rootMargin: '0px 0px 12% 0px', threshold: 0.01 }
     )
     observer.observe(el)
     return () => observer.disconnect()
@@ -43,11 +47,7 @@ export function AnimatedSection({ children, className = '', delay = 0, eager = f
   }
 
   return (
-    <div
-      ref={ref}
-      className={`in-view ${className}`}
-      style={{ transitionDelay: `${delay}ms` }}
-    >
+    <div ref={ref} className={`in-view ${className}`}>
       {children}
     </div>
   )

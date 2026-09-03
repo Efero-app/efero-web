@@ -60,11 +60,21 @@ body {
   .in-view:not(.visible) {
     opacity: 0;
     transform: translateY(26px);
-    transition: opacity 900ms cubic-bezier(.2,.7,.2,1), transform 900ms cubic-bezier(.2,.7,.2,1);
+    transition: opacity 260ms ease-out, transform 260ms ease-out;
   }
   .in-view.visible {
     opacity: 1;
     transform: none;
+  }
+}
+
+/* Mobile copy must never wait for an observer or animation while the user scrolls. */
+@media (max-width: 767px) {
+  .in-view,
+  .in-view:not(.visible) {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }
 
