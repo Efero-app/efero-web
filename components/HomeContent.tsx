@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import { HomeContactForm } from '@/components/HomeContactForm'
 import { AnimatedSection } from '@/components/AnimatedSection'
 import { ScrollProgress } from '@/components/ScrollProgress'
@@ -52,6 +51,38 @@ function Em({ children }: { children: React.ReactNode }) {
     <em className="font-serif italic font-normal text-forest">
       {children}
     </em>
+  )
+}
+
+type EditorialImageProps = {
+  name: 'team-ved-servicebil' | 'planlegging-pa-kontoret' | 'mobil-pa-byggeplass'
+  alt: string
+  sizes: string
+  className?: string
+  priority?: boolean
+}
+
+/**
+ * The Cloudflare image fallback can return the original JPEG dimensions even
+ * when Next requests a smaller variant. Pre-sized WebP sources keep the page
+ * light and let the browser select the right file without a runtime service.
+ */
+function EditorialImage({ name, alt, sizes, className = '', priority = false }: EditorialImageProps) {
+  const base = `/images/editorial/${name}`
+
+  return (
+    <img
+      src={`${base}-1200.webp`}
+      srcSet={`${base}-480.webp 480w, ${base}-768.webp 768w, ${base}-1200.webp 1200w`}
+      sizes={sizes}
+      alt={alt}
+      width={1200}
+      height={750}
+      loading={priority ? 'eager' : 'lazy'}
+      fetchPriority={priority ? 'high' : 'auto'}
+      decoding="async"
+      className={`absolute inset-0 h-full w-full ${className}`}
+    />
   )
 }
 
@@ -131,12 +162,12 @@ export function HomeContent() {
       <section className="max-w-site mx-auto px-6 md:px-10 pt-16 md:pt-20">
         <figure className="m-0">
           <div className="relative overflow-hidden rounded-[22px] bg-[#dfe7e2] aspect-[3/2] md:aspect-[18/8]">
-            <Image
-              src="/images/editorial/team-ved-servicebil.jpg"
+            <EditorialImage
+              name="team-ved-servicebil"
               alt="Et håndverkerteam som planlegger arbeidsdagen sammen ved servicebilen"
-              fill
-              sizes="(max-width: 768px) 100vw, 1200px"
+              sizes="(max-width: 767px) calc(100vw - 48px), (max-width: 1279px) calc(100vw - 80px), 1160px"
               className="object-cover object-center md:object-[center_42%]"
+              priority
             />
           </div>
           <figcaption className="mt-4 flex flex-wrap justify-between gap-2 text-[13px] leading-[1.5] text-[#52675f]">
@@ -159,11 +190,10 @@ export function HomeContent() {
             </p>
             <figure className="m-0 mt-9 max-w-[480px]">
               <div className="relative overflow-hidden rounded-[18px] bg-[#dfe7e2] aspect-[3/2]">
-                <Image
-                  src="/images/editorial/planlegging-pa-kontoret.jpg"
+                <EditorialImage
+                  name="planlegging-pa-kontoret"
                   alt="Tre kolleger som planlegger oppdrag med laptop og arbeidstegninger"
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 440px"
+                  sizes="(max-width: 767px) calc(100vw - 48px), (max-width: 1023px) calc(100vw - 80px), 480px"
                   className="object-cover"
                 />
               </div>
@@ -263,11 +293,10 @@ export function HomeContent() {
             <AnimatedSection>
               <figure className="m-0 max-w-[460px] lg:ml-auto">
                 <div className="relative overflow-hidden rounded-[22px] bg-[#dfe7e2] aspect-[4/5]">
-                  <Image
-                    src="/images/editorial/mobil-pa-byggeplass.jpg"
+                  <EditorialImage
+                    name="mobil-pa-byggeplass"
                     alt="Håndverker som registrerer arbeid på mobilen ute på byggeplass"
-                    fill
-                    sizes="(max-width: 1024px) 80vw, 420px"
+                    sizes="(max-width: 767px) calc(100vw - 48px), (max-width: 1023px) 80vw, 420px"
                     className="object-cover"
                   />
                 </div>
