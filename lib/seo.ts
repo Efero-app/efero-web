@@ -40,7 +40,7 @@ function socialImage(title: string, description: string) {
     title,
     description,
     // Endres når designet oppdateres, slik at WhatsApp m.fl. ikke bruker gammelt cachet bilde.
-    v: '2',
+    v: '3',
   })
 
   return {
