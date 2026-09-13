@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from '@/components/SiteLink'
 import type { Metadata } from 'next'
 import { resourceArticles } from '@/lib/resources'
 import { breadcrumbSchema, pageMeta, webPageSchema } from '@/lib/seo'

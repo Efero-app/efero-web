@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from '@/components/SiteLink'
 import EferoLogo from './EferoLogo'
 
 function AppBadges() {
@@ -22,7 +22,12 @@ const cols = [
     label: 'Produkt',
     links: [
       { label: 'Funksjoner', href: '/funksjoner' },
+      { label: 'Ordrestyring', href: '/funksjoner/ordrestyring' },
+      { label: 'Timeføring', href: '/funksjoner/timeforing' },
+      { label: 'Tilbud', href: '/funksjoner/tilbud' },
       { label: 'Bransjer', href: '/bransjer' },
+      { label: 'For elektrikere', href: '/bransjer/elektriker' },
+      { label: 'For rørleggere', href: '/bransjer/rorlegger' },
       { label: 'Kom i gang', href: '/kom-i-gang' },
       { label: 'FAQ', href: '/faq' },
       { label: 'Priser', href: '/priser' },

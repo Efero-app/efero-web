@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from '@/components/SiteLink'
 import { AnimatedSection } from '@/components/AnimatedSection'
 import { FaqAccordion } from '@/components/FaqAccordion'
 import { breadcrumbSchema, faqSchema, pageMeta } from '@/lib/seo'

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
+import Link from '@/components/SiteLink'
 import { AnimatedSection } from '@/components/AnimatedSection'
 import { DemoBookingForm } from '@/components/DemoBookingForm'
 import { breadcrumbSchema, pageMeta } from '@/lib/seo'

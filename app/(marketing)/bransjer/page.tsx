@@ -1,8 +1,10 @@
-import Link from 'next/link'
+import Link from '@/components/SiteLink'
 import { AnimatedSection } from '@/components/AnimatedSection'
 import { breadcrumbSchema, pageMeta } from '@/lib/seo'
 import { DEMO_LINK } from '@/lib/links'
 import type { Metadata } from 'next'
+import { LandingCards } from '@/components/LandingCards'
+import { industryPages } from '@/lib/landing-pages'
 
 export const metadata: Metadata = pageMeta({
   title: 'For håndverksbransjer',
@@ -75,6 +77,11 @@ export default function BransjerPage() {
             med mobilvennlig arbeidsflyt for montørene og oversikt til kontoret.
           </p>
         </AnimatedSection>
+      </section>
+
+      <section className="mx-auto max-w-site px-6 pb-14 md:px-10">
+        <h2 className="mb-8 text-[30px] font-medium tracking-tight">En arbeidsflyt fra ditt fag</h2>
+        <LandingCards pages={industryPages} />
       </section>
 
       <section className="border-y border-mist bg-[#eef2ef]" aria-label="Bransjer Efero passer for">

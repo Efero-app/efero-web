@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next'
 import { SITE_URL } from '@/lib/seo'
 import { resourceArticles } from '@/lib/resources'
+import { landingPages } from '@/lib/landing-pages'
 
 const pages: Array<{
   path: string
@@ -9,6 +10,7 @@ const pages: Array<{
 }> = [
   { path: '', changeFrequency: 'weekly', priority: 1 },
   { path: '/funksjoner', changeFrequency: 'monthly', priority: 0.9 },
+  { path: '/jobbsjekk', changeFrequency: 'monthly', priority: 0.9 },
   { path: '/bransjer', changeFrequency: 'monthly', priority: 0.85 },
   { path: '/book-demo', changeFrequency: 'monthly', priority: 0.9 },
   { path: '/venteliste', changeFrequency: 'weekly', priority: 0.95 },
@@ -36,5 +38,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.75,
   }))
 
-  return [...staticEntries, ...resourceEntries]
+  const landingEntries = landingPages.map(page => ({
+    url: `${SITE_URL}/${page.section}/${page.slug}`,
+    changeFrequency: 'monthly' as const,
+    priority: 0.85,
+  }))
+  return [...staticEntries, ...resourceEntries, ...landingEntries]
 }

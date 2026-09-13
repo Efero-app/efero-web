@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from '@/components/SiteLink'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { resourceArticles, resourceBySlug } from '@/lib/resources'
@@ -16,6 +16,11 @@ export default async function ResourceArticlePage({ params }: { params: Promise<
   const article = resourceBySlug((await params).slug)
   if (!article) notFound()
   const path = `/ressurser/${article.slug}`
+  const productLink = article.slug === 'prosjektokonomi-i-efero'
+    ? { href: '/funksjoner/ordrestyring', label: 'Ordrestyring og prosjektoppfølging i Efero' }
+    : article.slug === 'fra-tilbud-til-faktura'
+      ? { href: '/funksjoner/timeforing', label: 'Timeføring på riktig oppdrag' }
+      : { href: '/funksjoner/tilbud', label: 'Tilbudsprogram for håndverkere' }
   const structured = {
     '@context': 'https://schema.org', '@type': 'HowTo', name: article.title, description: article.description,
     inLanguage: 'nb-NO', url: `${SITE_URL}${path}`, dateModified: article.updatedAt,
@@ -41,6 +46,10 @@ export default async function ResourceArticlePage({ params }: { params: Promise<
       <div className="mt-16 border-t border-mist">{article.steps.map((step, index) => <section className="grid gap-4 border-b border-mist py-9 md:grid-cols-[64px_1fr]" key={step.title}><span className="font-mono text-[13px] text-forest">0{index + 1}</span><div><h2 className="text-[25px] font-medium text-ink">{step.title}</h2><p className="mt-3 text-[16px] leading-[1.7] text-[#2f4a41]">{step.text}</p></div></section>)}</div>
       <aside className="mt-12 bg-[#eef2ef] p-7 md:p-9"><h2 className="text-[22px] font-medium text-ink">Husk dette</h2><ul className="mt-5 space-y-3">{article.tips.map(tip => <li className="flex gap-3 text-[15px] leading-[1.6] text-[#2f4a41]" key={tip}><span aria-hidden className="text-forest">✓</span>{tip}</li>)}</ul></aside>
       <div className="mt-14 flex flex-wrap gap-3"><Link href="/book-demo" className="h-12 px-6 rounded-full bg-forest text-white inline-flex items-center font-medium">Book en demo</Link><Link href="/ressurser" className="h-12 px-6 rounded-full border border-mist inline-flex items-center text-forest">Se alle guider</Link></div>
+      <section className="mt-10 border-t border-mist pt-8">
+        <h2 className="mb-4 text-[24px] font-medium">Se løsningen i praksis</h2>
+        <Link href={productLink.href} className="inline-flex min-h-11 items-center text-forest underline underline-offset-4">{productLink.label}</Link>
+      </section>
     </article>
   </>
 }

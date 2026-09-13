@@ -21,3 +21,16 @@ Hver kontakt inneholder navn, e-post, valgfritt telefonnummer, bedrift,
 fagområde og bedriftsstørrelse. Du finner listen i Resend under **Contacts →
 Segments → Efero venteliste**. E-postvarslingens svar-til-adresse settes til
 interessentens e-post, slik at oppfølging kan gjøres direkte fra innboksen.
+
+## Kampanjesporing
+
+Ventelisten tar imot `utm_source`, `utm_medium`, `utm_campaign`, `utm_content`
+og `problem` i URL-en. Gyldige problemverdier er `margin`, `admin`,
+`likviditet`, `team` og `kundereise`. Attribusjonen lagres i nettleserøkten og
+sendes med i den interne lead-varslingen uten å legge flere synlige felt i
+skjemaet.
+
+Klienten publiserer `landing_view`, `waitlist_start` og `waitlist_submit` til
+`window.dataLayer` og eventet `efero:marketing`. Hvis en samtykkestyrt Meta
+Pixel allerede har opprettet `window.fbq`, sendes fullført registrering også som
+standardhendelsen `Lead`. Efero laster ikke sporingsskript uten samtykke.

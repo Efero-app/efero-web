@@ -102,7 +102,7 @@ export function DashboardMockup() {
 
 export function InvoiceMockup() {
   return (
-    <div className="rounded-2xl overflow-hidden shadow-2xl border border-border bg-white" style={{ height: 320 }} role="img" aria-label="Efero fakturagrunnlag for håndverkere">
+    <div className="rounded-2xl overflow-hidden shadow-2xl border border-border bg-white" style={{ height: 320 }} role="img" aria-label="Efero faktura for håndverkere">
       <div className="bg-navy px-5 py-3 flex justify-between items-center">
         <span className="text-white font-semibold text-[13px]">Faktura</span>
         <span className="text-white/50 text-[11px]">INV-2026-004</span>

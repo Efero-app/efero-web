@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
+import Link from '@/components/SiteLink'
 import { AnimatedSection } from '@/components/AnimatedSection'
 import { DEMO_LINK } from '@/lib/links'
 import {

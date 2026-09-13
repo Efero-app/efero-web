@@ -1,11 +1,13 @@
-import Link from 'next/link'
+import Link from '@/components/SiteLink'
 import { AnimatedSection } from '@/components/AnimatedSection'
 import { DEMO_LINK } from '@/lib/links'
 import { breadcrumbSchema, pageMeta } from '@/lib/seo'
 import type { Metadata } from 'next'
+import { LandingCards } from '@/components/LandingCards'
+import { featurePages } from '@/lib/landing-pages'
 
 export const metadata: Metadata = pageMeta({
-  title: 'Funksjoner',
+  title: 'Funksjoner for håndverkere – ordre, timer og tilbud',
   description:
     'Se hvordan Efero samler tilbud, jobber, timer, materialer, sjekklister, HMS og faktura i ett system — for kontoret, montørene og kundene.',
   path: '/funksjoner',
@@ -27,7 +29,7 @@ const groups = [
     items: [
       'Hold kunder, jobber, ansatte og timeplaner organisert.',
       'Send tilbud, få godkjenninger, spor endringer og lag faktura.',
-      'Se timer, materialer, innkjøp og lønnsomhet per jobb.',
+      'Følg timer, materialer, innkjøp og fakturerte beløp per jobb.',
       'Planlegg periodisk vedlikehold og hold oversikt over utstyr hos kundene.',
       'Få oversikt over hva som er gjort, forsinket, mangler eller trenger oppfølging.',
     ],
@@ -97,6 +99,11 @@ export default function FunksjonerPage() {
             <Link href="/faq" className="text-forest underline underline-offset-2">FAQ</Link>.
           </p>
         </AnimatedSection>
+      </section>
+
+      <section className="mx-auto max-w-site px-6 pb-16 md:px-10">
+        <h2 className="mb-8 text-[30px] font-medium tracking-tight">Se hvordan funksjonene brukes</h2>
+        <LandingCards pages={featurePages} />
       </section>
 
       {groups.map((group, gi) => (

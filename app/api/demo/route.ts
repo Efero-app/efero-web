@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { buildDemoEmail, validateDemoBooking } from '@/lib/demo-booking'
+import { syncDemoContact } from '@/lib/resend-contacts'
 
 const MAX_BODY_BYTES = 16_384
 
@@ -50,9 +51,20 @@ export async function POST(request: NextRequest) {
   }
 
   const email = buildDemoEmail(validation.data)
-  let response: Response
+  let contactSaved = false
   try {
-    response = await fetch(process.env.RESEND_API_ENDPOINT || 'https://api.resend.com/emails', {
+    contactSaved = await syncDemoContact(validation.data, {
+      apiKey: resendKey,
+      segmentId: process.env.DEMO_RESEND_SEGMENT_ID,
+      baseUrl: process.env.RESEND_API_BASE_URL,
+    })
+  } catch (error) {
+    console.error('Demo contact sync failed', error instanceof Error ? error.message : error)
+  }
+
+  let emailSent = false
+  try {
+    const response = await fetch(process.env.RESEND_API_ENDPOINT || 'https://api.resend.com/emails', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -68,15 +80,17 @@ export async function POST(request: NextRequest) {
       }),
       signal: AbortSignal.timeout(10_000),
     })
+    emailSent = response.ok
+    if (!response.ok) console.error('Demo booking email rejected by Resend', response.status)
   } catch (error) {
     console.error('Demo booking email request failed', error instanceof Error ? error.message : error)
-    return NextResponse.json({ error: 'Sendingen tok for lang tid. Prøv igjen.' }, { status: 504 })
   }
 
-  if (!response.ok) {
-    console.error('Demo booking email rejected by Resend', response.status)
+  // Contacts bevarer interessenten i Audience. Varslingsmailen er den operative
+  // sikkerhetskopien. Innsendingen feiler bare dersom begge kanalene svikter.
+  if (!contactSaved && !emailSent) {
     return NextResponse.json({ error: 'Kunne ikke sende forespørselen. Prøv igjen.' }, { status: 502 })
   }
 
-  return NextResponse.json({ ok: true })
+  return NextResponse.json({ ok: true, saved: contactSaved })
 }

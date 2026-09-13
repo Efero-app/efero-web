@@ -146,7 +146,7 @@ export const softwareApplicationSchema = {
   operatingSystem: 'Web',
   inLanguage: 'nb-NO',
   description:
-    'Efero samler kunder, oppdrag, tilbud, timer, materialer, HMS og fakturagrunnlag for norske håndverksbedrifter – i ett enkelt system.',
+    'Efero samler kunder, oppdrag, tilbud, timer, materialer, HMS og faktura for norske håndverksbedrifter – i ett enkelt system.',
   offers: {
     '@type': 'Offer',
     url: `${SITE_URL}/priser`,
@@ -155,7 +155,7 @@ export const softwareApplicationSchema = {
   featureList: [
     'Kunder, jobber, ansatte og timeplaner',
     'Tilbud, godkjenninger, endringer og faktura',
-    'Timer, materialer, innkjøp og lønnsomhet per jobb',
+    'Timer, materialer, innkjøp og fakturerte beløp per jobb',
     'Periodisk vedlikehold og utstyr hos kunden',
     'Sjekklister, risikovurderinger og servicerapporter',
     'Timeføring, bilder og rapporter fra mobil',

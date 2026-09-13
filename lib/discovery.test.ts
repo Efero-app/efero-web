@@ -8,9 +8,10 @@ describe('offentlig oppdagbarhet', () => {
     const entries = sitemap()
     const urls = entries.map(entry => entry.url)
 
-    expect(entries).toHaveLength(18)
+    expect(entries).toHaveLength(24)
     expect(urls).toContain('https://efero.no')
     expect(urls).toContain('https://efero.no/book-demo')
+    expect(urls).toContain('https://efero.no/jobbsjekk')
     expect(urls).toContain('https://efero.no/venteliste')
     expect(urls).toContain('https://efero.no/ressurser')
     expect(urls).toContain('https://efero.no/ressurser/lag-enkelt-pristilbud')

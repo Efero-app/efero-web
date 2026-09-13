@@ -1,8 +1,10 @@
-import Link from 'next/link'
+import Link from '@/components/SiteLink'
 import { HomeContactForm } from '@/components/HomeContactForm'
 import { AnimatedSection } from '@/components/AnimatedSection'
 import { ScrollProgress } from '@/components/ScrollProgress'
 import { DEMO_LINK } from '@/lib/links'
+import { LandingCards } from '@/components/LandingCards'
+import { featurePages, industryPages } from '@/lib/landing-pages'
 
 const trustPoints = [
   'Mindre jaging av folk på telefon, SMS og regneark.',
@@ -14,7 +16,7 @@ const trustPoints = [
 const officeFeatures = [
   'Hold kunder, jobber, ansatte og timeplaner organisert.',
   'Send tilbud, få godkjenninger, spor endringer og lag faktura.',
-  'Se timer, materialer, innkjøp og lønnsomhet per jobb.',
+  'Følg timer, materialer, innkjøp og fakturerte beløp per jobb.',
   'Planlegg periodisk vedlikehold og hold oversikt over utstyr hos kundene.',
   'Få oversikt over hva som er gjort, forsinket, mangler eller trenger oppfølging.',
 ]
@@ -115,10 +117,10 @@ export function HomeContent() {
         <div className="relative max-w-site mx-auto px-6 md:px-10 pt-20 md:pt-24 pb-16 md:pb-20">
           <div>
             <p className="font-mono text-[12px] tracking-[0.16em] uppercase text-[#3d5c52] mb-10">
-              Ordre- og timesystem for håndverksbedrifter
+              Fagsystem for norske håndverkere
             </p>
             <h1 className="hero-lcp m-0 text-[clamp(40px,6vw,88px)] leading-[1.0] tracking-[-0.035em] font-medium text-ink max-w-[20ch] mb-0">
-              Ett enkelt system for <Em>hele håndverksbedriften.</Em>
+              Ett enkelt fagsystem for <Em>hele håndverksbedriften.</Em>
             </h1>
           </div>
 
@@ -136,10 +138,10 @@ export function HomeContent() {
                   Book en demo
                 </Link>
                 <Link
-                  href="/funksjoner"
+                  href="/jobbsjekk"
                   className="h-[52px] px-7 rounded-full border border-[#b9c9c1] text-forest text-[16px] inline-flex items-center hover:border-forest hover:bg-[#e9efeb] transition-colors"
                 >
-                  Se funksjoner
+                  Ta Jobbsjekken
                 </Link>
               </div>
             </div>
@@ -167,7 +169,6 @@ export function HomeContent() {
               alt="Et håndverkerteam som planlegger arbeidsdagen sammen ved servicebilen"
               sizes="(max-width: 767px) calc(100vw - 48px), (max-width: 1279px) calc(100vw - 80px), 1160px"
               className="object-cover object-center md:object-[center_42%]"
-              priority
             />
           </div>
           <figcaption className="mt-4 flex flex-wrap justify-between gap-2 text-[13px] leading-[1.5] text-[#52675f]">
@@ -175,6 +176,15 @@ export function HomeContent() {
             <span className="font-mono uppercase tracking-[0.1em]">Én arbeidsflyt</span>
           </figcaption>
         </figure>
+      </section>
+
+      <section className="mx-auto max-w-site px-6 pt-20 md:px-10">
+        <h2 className="mb-5 text-[36px] font-medium leading-tight tracking-tight">Finn arbeidsflyten dere trenger</h2>
+        <p className="mb-8 max-w-[60ch] text-[18px] leading-relaxed text-[#2f4a41]">Fra det første pristilbudet til timer på riktig oppdrag. Se hvordan delene henger sammen i Efero.</p>
+        <LandingCards pages={featurePages} />
+        <h2 className="mb-6 mt-14 text-[28px] font-medium tracking-tight">Se Efero i ditt fag</h2>
+        <LandingCards pages={industryPages} />
+        <Link href="/bransjer" className="mt-6 inline-flex min-h-11 items-center text-forest underline underline-offset-4">Se alle håndverksbransjer</Link>
       </section>
 
       {/* ── FOR KONTORET ───────────────────────────────────────── */}

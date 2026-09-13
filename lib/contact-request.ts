@@ -20,6 +20,7 @@ export type ContactRequest = {
   start: string
   message: string
   website: string
+  source: 'contact' | 'jobbsjekk'
 }
 
 export type ContactRequestValidation =
@@ -47,6 +48,7 @@ export function validateContactRequest(input: unknown): ContactRequestValidation
     start: cleanString(raw.start, 60),
     message: cleanString(raw.message, 2_000),
     website: cleanString(raw.website, 200),
+    source: cleanString(raw.source, 30) === 'jobbsjekk' ? 'jobbsjekk' : 'contact',
   }
 
   const errors: Record<string, string> = {}
@@ -75,6 +77,7 @@ export function buildContactEmail(data: ContactRequest) {
     ['Bedrift', data.company || 'Ikke oppgitt'],
     ['Antall teknikere', data.team || 'Ikke oppgitt'],
     ['Ønsket oppstart', data.start || 'Ikke oppgitt'],
+    ['Kilde', data.source === 'jobbsjekk' ? 'Jobbsjekken' : 'Kontaktskjema'],
   ]
   const message = data.message || 'Ingen melding oppgitt.'
   const htmlRows = rows.map(([label, value]) => `
@@ -84,16 +87,16 @@ export function buildContactEmail(data: ContactRequest) {
     </tr>`).join('')
 
   return {
-    subject: `Ny henvendelse: ${data.company || data.name}`,
+    subject: `${data.source === 'jobbsjekk' ? 'Nytt Jobbsjekk-lead' : 'Ny henvendelse'}: ${data.company || data.name}`,
     html: `
       <div style="font-family:Arial,sans-serif;max-width:640px;color:#00281f">
-        <h1 style="font-size:24px;margin:0 0 20px">Ny henvendelse fra efero.no</h1>
+        <h1 style="font-size:24px;margin:0 0 20px">${data.source === 'jobbsjekk' ? 'Nytt lead fra Jobbsjekken' : 'Ny henvendelse fra efero.no'}</h1>
         <table style="border-collapse:collapse;width:100%;margin-bottom:24px">${htmlRows}</table>
         <h2 style="font-size:17px;margin:0 0 10px">Melding</h2>
         <p style="margin:0;white-space:pre-wrap;line-height:1.6">${escapeHtml(message)}</p>
       </div>`,
     text: [
-      'Ny henvendelse fra efero.no',
+      data.source === 'jobbsjekk' ? 'Nytt lead fra Jobbsjekken' : 'Ny henvendelse fra efero.no',
       '',
       ...rows.map(([label, value]) => `${label}: ${value}`),
       '',

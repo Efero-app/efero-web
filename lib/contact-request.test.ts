@@ -14,6 +14,7 @@ const validInput = {
   start: CONTACT_START_OPTIONS[0],
   message: 'Vi ønsker mer informasjon.',
   website: '',
+  source: 'contact',
 }
 
 describe('validateContactRequest', () => {
@@ -70,5 +71,20 @@ describe('buildContactEmail', () => {
     expect(email.html).not.toContain('<img')
     expect(email.html).toContain('&lt;script&gt;')
     expect(email.html).toContain('&lt;img')
+  })
+
+  it('merker Jobbsjekk-leads tydelig', () => {
+    const result = validateContactRequest({
+      ...validInput,
+      source: 'jobbsjekk',
+      message: 'Jobbsjekk: 4/10. Kilde: instagram / sma_mysterier / 01_time.',
+    })
+    if (!result.ok) throw new Error('Testdata should be valid')
+
+    const email = buildContactEmail(result.data)
+
+    expect(email.subject).toBe('Nytt Jobbsjekk-lead: Nordmann Elektro AS')
+    expect(email.text).toContain('Kilde: Jobbsjekken')
+    expect(email.text).toContain('instagram / sma_mysterier / 01_time')
   })
 })

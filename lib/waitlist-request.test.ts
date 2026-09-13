@@ -4,6 +4,7 @@ import { buildWaitlistEmail, validateWaitlistRequest, WAITLIST_TEAM_OPTIONS, WAI
 const validPayload = {
   name: 'Kari Nordmann', email: 'KARI@example.no', phone: '+47 900 00 000', company: 'Nordmann Elektro AS',
   trade: WAITLIST_TRADE_OPTIONS[0], teamSize: WAITLIST_TEAM_OPTIONS[1], consent: true, website: '',
+  attribution: { utmSource: 'meta', utmMedium: 'paid-social', utmCampaign: 'efero_margin', utmContent: '01', problem: 'margin', landingPath: '/venteliste' },
 }
 
 describe('waitlist request', () => {
@@ -11,6 +12,15 @@ describe('waitlist request', () => {
     const result = validateWaitlistRequest(validPayload)
     expect(result.ok).toBe(true)
     if (result.ok) expect(result.data.email).toBe('kari@example.no')
+  })
+
+  it('bevarer godkjent attribusjon i varslingen', () => {
+    const result = validateWaitlistRequest(validPayload)
+    expect(result.ok).toBe(true)
+    if (!result.ok) return
+    expect(result.data.attribution.problem).toBe('margin')
+    const email = buildWaitlistEmail(result.data)
+    expect(email.text).toContain('UTM-kampanje: efero_margin')
   })
 
   it('avviser ugyldige segmenter og telefonnummer', () => {

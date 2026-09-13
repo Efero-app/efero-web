@@ -2,11 +2,9 @@ import { initOpenNextCloudflareForDev } from '@opennextjs/cloudflare'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    // Sidens lille globale stilark legges direkte i HTML og fjerner en
-    // render-blokkerende nettverksrunde før hovedoverskriften kan vises.
-    inlineCss: true,
-  },
+  // Send komplett metadata i <head> også på sider med søkeparametre.
+  // Gjelder alle besøkende, slik at deling og indeksering ikke avhenger av JS.
+  htmlLimitedBots: /.*/,
   async redirects() {
     return [
       {

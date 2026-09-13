@@ -165,7 +165,7 @@ export function HomeContactForm() {
                   <svg className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" viewBox="0 0 14 14" fill="none">
                     <path d="M2.5 7.5l3 3 6-7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
-                  Svar innen 1 time på hverdager
+                  Svar innen én arbeidsdag
                 </p>
               </form>
             </>

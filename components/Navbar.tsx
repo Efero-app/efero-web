@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
+import Link from '@/components/SiteLink'
 import { usePathname } from 'next/navigation'
 import EferoLogo from './EferoLogo'
 import { DEMO_LINK } from '@/lib/links'
@@ -8,9 +8,9 @@ import { DEMO_LINK } from '@/lib/links'
 const centerLinks = [
   { href: '/',            label: 'Hjem' },
   { href: '/funksjoner', label: 'Funksjoner' },
+  { href: '/jobbsjekk',  label: 'Jobbsjekk' },
   { href: '/bransjer',   label: 'Bransjer' },
   { href: '/priser',     label: 'Priser' },
-  { href: '/ressurser',  label: 'Guider' },
   { href: '/om-oss',     label: 'Om oss' },
   { href: '/kontakt',    label: 'Kontakt' },
 ]
@@ -39,7 +39,7 @@ export function Navbar() {
           <EferoLogo variant="dark" />
         </Link>
 
-        <nav className="hidden md:flex items-center gap-8 flex-1 justify-center" aria-label="Hovedmeny">
+        <nav className="hidden xl:flex items-center gap-6 flex-1 justify-center" aria-label="Hovedmeny">
           {centerLinks.map(l => (
             <Link
               key={l.label}
@@ -54,7 +54,7 @@ export function Navbar() {
           ))}
         </nav>
 
-        <div className="hidden md:flex items-center gap-3 shrink-0">
+        <div className="hidden xl:flex items-center gap-3 shrink-0">
           <Link
             href={DEMO_LINK}
             className="h-11 px-5 rounded-full bg-ink text-[#f5f7f5] text-[14px] font-medium flex items-center hover:bg-forest transition-colors"
@@ -65,7 +65,7 @@ export function Navbar() {
 
         <button
           type="button"
-          className="md:hidden min-h-11 min-w-11 p-2 -mr-2 shrink-0 inline-flex items-center justify-center"
+          className="xl:hidden min-h-11 min-w-11 p-2 -mr-2 shrink-0 inline-flex items-center justify-center"
           onClick={() => setOpen(v => !v)}
           aria-label={open ? 'Lukk meny' : 'Åpne meny'}
           aria-expanded={open}
@@ -80,7 +80,7 @@ export function Navbar() {
       </div>
 
       {open && (
-        <div id="mobile-nav" className="md:hidden bg-lgray border-t border-mist px-6 py-5 flex flex-col gap-4">
+        <div id="mobile-nav" className="xl:hidden bg-lgray border-t border-mist px-6 py-5 flex flex-col gap-4">
           {centerLinks.map(l => (
             <Link
               key={l.label}

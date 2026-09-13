@@ -1,3 +1,5 @@
+import { EMPTY_ATTRIBUTION, MarketingAttribution, normalizeAttribution } from '@/lib/marketing-attribution'
+
 export const WAITLIST_TEAM_OPTIONS = [
   'Kun meg',
   '2–5 ansatte',
@@ -24,6 +26,7 @@ export type WaitlistRequest = {
   teamSize: string
   consent: boolean
   website: string
+  attribution: MarketingAttribution
 }
 
 export type WaitlistValidation =
@@ -52,6 +55,9 @@ export function validateWaitlistRequest(input: unknown): WaitlistValidation {
     teamSize: cleanString(raw.teamSize, 40),
     consent: raw.consent === true,
     website: cleanString(raw.website, 200),
+    attribution: raw.attribution && typeof raw.attribution === 'object' && !Array.isArray(raw.attribution)
+      ? normalizeAttribution(raw.attribution as Record<string, unknown>)
+      : EMPTY_ATTRIBUTION,
   }
 
   const errors: Record<string, string> = {}
@@ -76,6 +82,12 @@ export function buildWaitlistEmail(data: WaitlistRequest) {
   const rows = [
     ['Navn', data.name], ['E-post', data.email], ['Telefon', data.phone || 'Ikke oppgitt'],
     ['Bedrift', data.company], ['Fagområde', data.trade], ['Bedriftsstørrelse', data.teamSize],
+    ['Kampanjeproblem', data.attribution.problem || 'Ikke oppgitt'],
+    ['UTM-kilde', data.attribution.utmSource || 'Ikke oppgitt'],
+    ['UTM-medium', data.attribution.utmMedium || 'Ikke oppgitt'],
+    ['UTM-kampanje', data.attribution.utmCampaign || 'Ikke oppgitt'],
+    ['UTM-innhold', data.attribution.utmContent || 'Ikke oppgitt'],
+    ['Landingsside', data.attribution.landingPath || 'Ikke oppgitt'],
   ]
   const htmlRows = rows.map(([label, value]) => `
     <tr><td style="padding:8px 16px 8px 0;color:#5a7268;vertical-align:top">${escapeHtml(label)}</td>

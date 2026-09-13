@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { buildContactEmail, validateContactRequest } from '@/lib/contact-request'
+import { syncContactRequest } from '@/lib/resend-contacts'
 
 const MAX_BODY_BYTES = 16_384
 
@@ -48,10 +49,21 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  const email = buildContactEmail(validation.data)
-  let response: Response
+  let contactSaved = false
   try {
-    response = await fetch(process.env.RESEND_API_ENDPOINT || 'https://api.resend.com/emails', {
+    contactSaved = await syncContactRequest(validation.data, {
+      apiKey: resendKey,
+      segmentId: process.env.CONTACT_RESEND_SEGMENT_ID,
+      baseUrl: process.env.RESEND_API_BASE_URL,
+    })
+  } catch (error) {
+    console.error('Contact sync failed', error instanceof Error ? error.message : error)
+  }
+
+  const email = buildContactEmail(validation.data)
+  let emailSent = false
+  try {
+    const response = await fetch(process.env.RESEND_API_ENDPOINT || 'https://api.resend.com/emails', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -67,15 +79,17 @@ export async function POST(request: NextRequest) {
       }),
       signal: AbortSignal.timeout(10_000),
     })
+    emailSent = response.ok
+    if (!response.ok) console.error('Contact email rejected by Resend', response.status)
   } catch (error) {
     console.error('Contact email request failed', error instanceof Error ? error.message : error)
-    return NextResponse.json({ error: 'Sendingen tok for lang tid. Prøv igjen.' }, { status: 504 })
   }
 
-  if (!response.ok) {
-    console.error('Contact email rejected by Resend', response.status)
+  // Resend Contacts er hovedlisten. Varselmailen er en uavhengig reserve, slik at
+  // henvendelsen ikke går tapt dersom én av Resend-operasjonene feiler.
+  if (!contactSaved && !emailSent) {
     return NextResponse.json({ error: 'Kunne ikke sende meldingen. Prøv igjen.' }, { status: 502 })
   }
 
-  return NextResponse.json({ ok: true })
+  return NextResponse.json({ ok: true, saved: contactSaved })
 }

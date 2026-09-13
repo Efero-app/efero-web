@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from '@/components/SiteLink'
 import { DashboardMockup } from './AppMockup'
 
 export function Hero() {

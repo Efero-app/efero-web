@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from '@/components/SiteLink'
 import { AnimatedSection } from '@/components/AnimatedSection'
 import { breadcrumbSchema, pageMeta } from '@/lib/seo'
 import { DEMO_LINK } from '@/lib/links'
@@ -7,7 +7,7 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = pageMeta({
   title: 'Kom i gang',
   description:
-    'Slik kommer håndverksbedrifter i gang med Efero: book demo, prøv i 30 dager og få oversikt over kunder, oppdrag, tilbud og fakturagrunnlag.',
+    'Slik kommer håndverksbedrifter i gang med Efero: book demo, prøv i 30 dager og få oversikt over kunder, oppdrag, tilbud og faktura.',
   path: '/kom-i-gang',
   keywords: ['komme i gang efero', 'håndverker program oppstart', 'efero onboarding'],
 })
@@ -21,7 +21,7 @@ const steps = [
   {
     num: '02',
     title: 'Prøv i 30 dager',
-    text: 'Sett opp kunder og oppdrag, inviter medarbeidere, og se tilbud og fakturagrunnlag i samme system.',
+    text: 'Sett opp kunder og oppdrag, inviter medarbeidere, og se tilbud og faktura i samme system.',
   },
   {
     num: '03',

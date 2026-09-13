@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import Link from '@/components/SiteLink'
 import { useState } from 'react'
 import { DEMO_MODULES, START_TIMELINE_OPTIONS, TEAM_SIZE_OPTIONS } from '@/lib/demo-booking'
 

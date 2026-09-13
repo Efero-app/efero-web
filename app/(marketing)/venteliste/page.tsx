@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
+import Link from '@/components/SiteLink'
 import { WaitlistForm } from '@/components/WaitlistForm'
 import { breadcrumbSchema, pageMeta, webPageSchema } from '@/lib/seo'
+import { attributionFromSearchParams } from '@/lib/marketing-attribution'
 
 const description = 'Bli blant de første håndverksbedriftene som får tilgang til Efero. Reserver plass, påvirk produktet og få personlig oppstart.'
 
@@ -16,7 +17,8 @@ const benefits = [
   { number: '03', title: 'Personlig oppstart', text: 'Vi hjelper deg i gang og tilpasser oppsettet til måten dere jobber på.' },
 ]
 
-export default function VentelistePage() {
+export default async function VentelistePage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  const attribution = attributionFromSearchParams(await searchParams)
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([
@@ -45,7 +47,7 @@ export default function VentelistePage() {
               {['Uforpliktende', 'Ingen betalingskort', 'Norsk support'].map(item => <span key={item} className="flex items-center gap-2"><svg aria-hidden="true" viewBox="0 0 20 20" className="h-4 w-4 text-forest" fill="none" stroke="currentColor" strokeWidth="2"><path d="m4 10 4 4 8-8" /></svg>{item}</span>)}
             </div>
           </div>
-          <WaitlistForm />
+          <WaitlistForm initialAttribution={attribution} />
         </div>
       </section>
 
@@ -56,7 +58,7 @@ export default function VentelistePage() {
         </div>
       </section>
 
-      <section className="bg-forest text-white"><div className="mx-auto grid max-w-site grid-cols-1 gap-10 px-6 py-16 md:px-10 lg:grid-cols-[1fr_auto] lg:items-center"><div><p className="font-mono text-[11px] uppercase tracking-[0.15em] text-white/65">Laget for arbeidsdagen deres</p><h2 className="mt-3 max-w-[22ch] text-[34px] font-medium leading-[1.08] tracking-[-0.025em]">Jobber, timer, dokumentasjon og fakturagrunnlag — samlet.</h2></div><Link href="/funksjoner" className="inline-flex h-12 w-fit items-center rounded-full border border-white/35 px-6 text-[14px] font-medium transition hover:bg-white hover:text-forest">Utforsk funksjonene →</Link></div></section>
+      <section className="bg-forest text-white"><div className="mx-auto grid max-w-site grid-cols-1 gap-10 px-6 py-16 md:px-10 lg:grid-cols-[1fr_auto] lg:items-center"><div><p className="font-mono text-[11px] uppercase tracking-[0.15em] text-white/65">Laget for arbeidsdagen deres</p><h2 className="mt-3 max-w-[22ch] text-[34px] font-medium leading-[1.08] tracking-[-0.025em]">Tilbud, jobber, timer, dokumentasjon og faktura — samlet.</h2></div><Link href="/funksjoner" className="inline-flex h-12 w-fit items-center rounded-full border border-white/35 px-6 text-[14px] font-medium transition hover:bg-white hover:text-forest">Utforsk funksjonene →</Link></div></section>
     </>
   )
 }

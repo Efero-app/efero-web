@@ -2,11 +2,13 @@ import type { Metadata } from 'next'
 import { Instrument_Sans, Instrument_Serif, IBM_Plex_Mono } from 'next/font/google'
 import './globals.css'
 import { organizationSchema, websiteSchema, DEPLOYMENT_URL, SITE_URL } from '@/lib/seo'
+import { MarketingAttribution } from '@/components/MarketingAttribution'
 
 const sans = Instrument_Sans({
   subsets: ['latin'],
   display: 'optional',
-  preload: false,
+  // Brødteksten bruker denne på alle sider; hent den uten en ekstra CSS-runde.
+  preload: true,
   variable: '--font-sans',
 })
 
@@ -36,7 +38,7 @@ export const metadata: Metadata = {
     template: '%s | Efero',
   },
   description:
-    'Efero samler kunder, oppdrag, tilbud, timer, materialer, HMS og fakturagrunnlag for norske håndverksbedrifter – i ett enkelt system.',
+    'Efero samler kunder, oppdrag, tilbud, timer, materialer, HMS og faktura for norske håndverksbedrifter – i ett enkelt system.',
   applicationName: 'Efero',
   authors: [{ name: 'Efero', url: SITE_URL }],
   creator: 'Efero',
@@ -78,6 +80,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="nb" className={`${sans.variable} ${serif.variable} ${mono.variable}`}>
       <body className={sans.className}>
+        <MarketingAttribution />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}

@@ -36,7 +36,7 @@ export const resourceArticles: ResourceArticle[] = [
       { title: 'Kunden aksepterer tilbudet', text: 'Godkjenningen registreres på tilbudet. Det avtalte innholdet og beløpet beholdes som grunnlag for videre arbeid.' },
       { title: 'Planlegg oppdraget', text: 'Oppdraget legges på riktig dato og vises i kalenderen med status og arbeidsadresse. Derfra kan du åpne oppdraget direkte.' },
       { title: 'Marker jobben som ferdig', text: 'Når arbeidet er fullført, kontrollerer du timer, materialer, utlegg og eventuelle endringer før fakturering.' },
-      { title: 'Opprett faktura fra oppdraget', text: 'Bruk det aksepterte tilbudet som fakturagrunnlag. Legg bare til dokumenterte ekstrakostnader, kontroller forhåndsvisningen og utsted når alt stemmer.' },
+      { title: 'Opprett faktura fra oppdraget', text: 'Start med det aksepterte tilbudet. Legg bare til dokumenterte ekstrakostnader, kontroller forhåndsvisningen og utsted når alt stemmer.' },
     ],
     tips: ['Sett dato og arbeidsadresse før oppdraget planlegges.', 'Registrer tillegg mens jobben pågår.', 'Kontroller fakturakladden før den utstedes.'],
   },
