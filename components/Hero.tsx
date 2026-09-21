@@ -39,7 +39,7 @@ export function Hero() {
             </div>
 
             <ul className="flex flex-col sm:flex-row gap-3 text-[14px] text-slate">
-              {['30 dager gratis uten betalingskort', 'Personlig oppstart inkludert', 'Ingen bindingstid'].map(t => (
+              {['30 dager gratis uten betalingskort', 'Personlig hjelp til oppstart'].map(t => (
                 <li key={t} className="flex items-center gap-1.5">
                   <svg className="w-4 h-4 text-emerald-500 flex-shrink-0" viewBox="0 0 16 16" fill="currentColor">
                     <path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/>

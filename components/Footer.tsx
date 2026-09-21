@@ -39,6 +39,7 @@ const cols = [
     label: 'Selskap',
     links: [
       { label: 'Om oss', href: '/om-oss' },
+      { label: 'Bli partner', href: '/partner' },
       { label: 'Kontakt', href: '/kontakt' },
       { label: 'Personvern', href: '/personvern' },
       { label: 'Vilkår', href: '/vilkar' },

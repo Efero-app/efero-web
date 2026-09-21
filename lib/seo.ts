@@ -150,7 +150,7 @@ export const softwareApplicationSchema = {
   offers: {
     '@type': 'Offer',
     url: `${SITE_URL}/priser`,
-    description: 'Behovsbasert månedsabonnement med skriftlig totalpris før oppstart, uten binding eller etableringsavgift',
+    description: 'Behovsbasert månedsabonnement med skriftlig totalpris før oppstart og personlig hjelp til å komme i gang',
   },
   featureList: [
     'Kunder, jobber, ansatte og timeplaner',

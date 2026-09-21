@@ -57,7 +57,7 @@ Efero gathers customer records, jobs, schedules, quotes, time, materials, docume
 - Efero provides the complete scope and total monthly price in writing before activation.
 - The public website does not publish a fixed standard price.
 - The stated trial is 30 days without a payment card.
-- The public terms state no standard setup fee and no lock-in period.
+- Efero offers personal onboarding.
 - Exact integration availability must be confirmed with Efero.
 
 ## Important product boundaries

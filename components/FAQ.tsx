@@ -20,7 +20,7 @@ const items = [
   },
   {
     q: 'Kan jeg prøve det uten å forplikte meg?',
-    a: 'Ja. Du får 30 dager gratis uten betalingskort, ingen etableringsavgift og ingen bindingstid.',
+    a: 'Ja. Du får 30 dager gratis uten betalingskort.',
   },
 ]
 

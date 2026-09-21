@@ -23,8 +23,7 @@ describe('offentlig prismodell', () => {
     expect(OPTIONAL_MODULES).toHaveLength(5)
     expect(PRICING_TERMS).toEqual({
       trial: '30 dager gratis uten betalingskort',
-      setup: 'Personlig oppstart uten etableringsgebyr',
-      cancellation: 'Månedsabonnement uten bindingstid',
+      setup: 'Personlig hjelp til oppstart',
       support: 'E-postsupport med svar innen én virkedag',
     })
   })

@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import {
   buildDemoEmail,
+  buildPartnerDemoMessage,
+  DEMO_MODULES,
   START_TIMELINE_OPTIONS,
   TEAM_SIZE_OPTIONS,
   validateDemoBooking,
@@ -54,6 +56,20 @@ describe('validateDemoBooking', () => {
 })
 
 describe('buildDemoEmail', () => {
+  it('uses readable Norwegian module names in partner referrals and fits the intake limit', () => {
+    const message = buildPartnerDemoMessage({ ...validInput,
+      modules: DEMO_MODULES.map(module => module.id), message: 'a'.repeat(1500),
+    })
+    expect(message).toContain('Tilbud og godkjenning')
+    expect(message).toContain('Timer og ansatte')
+    expect(message).not.toContain('quotes')
+    expect(message.length).toBeLessThanOrEqual(2000)
+    expect(message.endsWith('a'.repeat(1500))).toBe(true)
+  })
+  it('keeps customer-controlled email subjects on one line', () => {
+    const email = buildDemoEmail({ ...validInput, company: 'Bedrift\r\nBcc: injected@example.test' })
+    expect(email.subject).not.toMatch(/[\r\n]/)
+  })
   it('lager både tekst og HTML med valgte moduler', () => {
     const result = validateDemoBooking(validInput)
     if (!result.ok) throw new Error('Testdata should be valid')
@@ -64,6 +80,12 @@ describe('buildDemoEmail', () => {
     expect(email.text).toContain('Tilbud og godkjenning')
     expect(email.text).toContain('Timer og ansatte')
     expect(email.html).toContain('Ønskede moduler')
+    expect(email.html).toContain('background:#004c3a')
+    expect(email.html).toContain('role="presentation"')
+    expect(email.html).toContain('Svar kunden')
+    expect(email.html).toContain('mailto:enlil%40example.no')
+    expect(email.html).not.toContain('Kom fra partner')
+    expect(email.html).not.toContain('/platform/partners/')
   })
 
   it('escaper brukerinnhold i HTML-e-posten', () => {

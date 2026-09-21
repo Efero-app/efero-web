@@ -15,7 +15,6 @@ import {
 const included = [
   PRICING_TERMS.trial,
   PRICING_TERMS.setup,
-  PRICING_TERMS.cancellation,
   PRICING_TERMS.support,
   'Norsk MVA og sikker lagring av bedriftsdata',
 ]
@@ -40,10 +39,6 @@ const faqItems = [
   {
     q: 'Kan løsningen endres senere?',
     a: 'Ja. Dere kan starte med det viktigste og utvide med flere brukere eller arbeidsområder når behovet endrer seg.',
-  },
-  {
-    q: 'Er det bindingstid?',
-    a: 'Nei. Efero faktureres månedlig og kan sies opp før neste faktureringsperiode. Det er ingen etableringsavgift for standard oppstart.',
   },
 ]
 

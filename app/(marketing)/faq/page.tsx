@@ -24,7 +24,7 @@ const faqItems = [
   },
   {
     q: 'Kan jeg prøve uten å forplikte meg?',
-    a: 'Ja. Du får 30 dager gratis uten betalingskort. Det er ingen etableringsavgift eller bindingstid etterpå.',
+    a: 'Ja. Du får 30 dager gratis uten betalingskort.',
   },
   {
     q: 'Støtter Efero norsk MVA og faktura?',

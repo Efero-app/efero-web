@@ -133,6 +133,10 @@ function moduleLabels(moduleIdsToFormat: string[]) {
   return moduleIdsToFormat.map(id => DEMO_MODULES.find(module => module.id === id)?.label ?? id)
 }
 
+export function buildPartnerDemoMessage(data: DemoBooking) {
+  return `Team: ${data.teamSize}\nOppstart: ${data.startTimeline}\nModuler: ${moduleLabels(data.modules).join(', ')}\n${data.message}`
+}
+
 export function buildDemoEmail(data: DemoBooking) {
   const modules = moduleLabels(data.modules)
   const phone = data.phone || 'Ikke oppgitt'
@@ -148,21 +152,43 @@ export function buildDemoEmail(data: DemoBooking) {
 
   const htmlRows = rows.map(([label, value]) => `
     <tr>
-      <td style="padding:8px 16px 8px 0;color:#5a7268;vertical-align:top">${escapeHtml(label)}</td>
-      <td style="padding:8px 0;color:#00281f;font-weight:600">${escapeHtml(value)}</td>
+      <th scope="row" style="padding:10px 16px 10px 0;border-bottom:1px solid #e3ece7;color:#5a7268;vertical-align:top;text-align:left;font-size:14px;font-weight:400;width:38%">${escapeHtml(label)}</th>
+      <td style="padding:10px 0;border-bottom:1px solid #e3ece7;color:#00281f;font-size:14px;font-weight:600;overflow-wrap:anywhere">${escapeHtml(value)}</td>
     </tr>`).join('')
 
   return {
-    subject: `Ny demoforespørsel: ${data.company}`,
-    html: `
-      <div style="font-family:Arial,sans-serif;max-width:640px;color:#00281f">
-        <h1 style="font-size:24px;margin:0 0 20px">Ny demoforespørsel</h1>
-        <table style="border-collapse:collapse;width:100%;margin-bottom:24px">${htmlRows}</table>
-        <h2 style="font-size:17px;margin:0 0 10px">Ønskede moduler</h2>
-        <ul style="margin:0 0 24px;padding-left:20px">${modules.map(module => `<li style="margin:6px 0">${escapeHtml(module)}</li>`).join('')}</ul>
-        <h2 style="font-size:17px;margin:0 0 10px">Tilleggsinformasjon</h2>
-        <p style="margin:0;white-space:pre-wrap;line-height:1.6">${escapeHtml(message)}</p>
-      </div>`,
+    subject: `Ny demoforespørsel: ${data.company.replace(/[\r\n]+/g, ' ')}`,
+    html: `<!doctype html>
+<html lang="nb"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ny demoforespørsel</title></head>
+<body style="margin:0;padding:0;background:#f4f8f6;color:#00281f;font-family:Segoe UI,Helvetica,Arial,sans-serif">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f8f6;padding:32px 12px"><tr><td align="center">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border:1px solid #d5e0db;border-radius:16px;overflow:hidden">
+      <tr><td style="background:#004c3a;padding:24px 28px">
+        <p style="margin:0 0 10px;color:#ffffff;font-size:13px;font-weight:600;letter-spacing:2px">EFERO</p>
+        <h1 style="margin:0;color:#ffffff;font-size:24px;line-height:1.3;font-weight:600">Ny demoforespørsel</h1>
+        <p style="margin:10px 0 0;color:#d8eee6;font-size:14px;line-height:1.5">En bedrift ønsker å bli bedre kjent med Efero.</p>
+      </td></tr>
+      <tr><td style="padding:28px">
+        <h2 style="font-size:17px;margin:0 0 12px;font-weight:600">Kontaktinformasjon</h2>
+        <table aria-label="Kontaktinformasjon" style="border-collapse:collapse;width:100%;margin-bottom:28px">${htmlRows}</table>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;background:#edf5f0;border:1px solid #d5e5dc;border-radius:12px"><tr><td style="padding:20px">
+          <h2 style="font-size:17px;margin:0 0 10px;font-weight:600">Ønskede moduler</h2>
+          <ul style="margin:0;padding-left:20px;font-size:15px;line-height:1.6">${modules.map(module => `<li style="margin:6px 0">${escapeHtml(module)}</li>`).join('')}</ul>
+        </td></tr></table>
+        <h2 style="font-size:17px;margin:0 0 10px;font-weight:600">Tilleggsinformasjon</h2>
+        <p style="margin:0 0 24px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:15px;line-height:1.6">${escapeHtml(message)}</p>
+        <p style="margin:0 0 20px;font-size:14px;line-height:1.6;color:#5a7268">Kontakt kunden for å avtale møtet. Ingen møtetid er bestilt i kalenderen.</p>
+        <table role="presentation" cellpadding="0" cellspacing="0"><tr><td bgcolor="#004c3a" style="border-radius:10px;text-align:center">
+          <a href="mailto:${escapeHtml(encodeURIComponent(data.email))}" style="display:inline-block;padding:14px 24px;color:#ffffff;text-decoration:none;font-size:15px;font-weight:600">Svar kunden</a>
+        </td></tr></table>
+      </td></tr>
+      <tr><td style="padding:18px 28px;border-top:1px solid #d5e0db;background:#f4f8f6">
+        <p style="margin:0;font-size:12px;line-height:1.6;color:#5a7268">Internt varsel til Efero. Du kan også svare direkte på denne e-posten for å kontakte kunden.</p>
+        <p style="margin:10px 0 0;font-size:12px;font-weight:600;color:#004c3a">Efero · Ett enkelt system for hele arbeidsdagen.</p>
+      </td></tr>
+    </table>
+  </td></tr></table>
+</body></html>`,
     text: [
       'Ny demoforespørsel',
       '',

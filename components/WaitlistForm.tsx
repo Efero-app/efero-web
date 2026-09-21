@@ -164,7 +164,7 @@ export function WaitlistForm({ initialAttribution = EMPTY_ATTRIBUTION }: { initi
       <Button type="submit" disabled={state === 'loading'} className="mt-6 h-[54px] w-full text-[16px]">
         {state === 'loading' ? 'Registrerer…' : 'Reserver min plass'}
       </Button>
-      <p className="mt-3 text-center text-[12px] text-[#52675f]">Ingen spam. Ingen binding. Meld deg av når som helst.</p>
+      <p className="mt-3 text-center text-[12px] text-[#52675f]">Ingen spam. Meld deg av når som helst.</p>
     </form>
   )
 }

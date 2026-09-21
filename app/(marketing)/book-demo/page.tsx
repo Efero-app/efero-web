@@ -11,7 +11,9 @@ export const metadata: Metadata = pageMeta({
   keywords: ['book demo efero', 'demo håndverkersystem', 'modulbasert håndverker app'],
 })
 
-export default function BookDemoPage() {
+export default async function BookDemoPage({ searchParams }: { searchParams?: Promise<{ partner?: string | string[] }> }) {
+  const query = await searchParams
+  const partner = typeof query?.partner === 'string' ? query.partner.slice(0, 32) : ''
   return (
     <>
       <script
@@ -69,7 +71,7 @@ export default function BookDemoPage() {
         </AnimatedSection>
 
         <AnimatedSection delay={80}>
-          <DemoBookingForm />
+          <DemoBookingForm initialPartner={partner} />
         </AnimatedSection>
       </section>
     </>

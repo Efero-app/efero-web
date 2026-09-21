@@ -39,21 +39,7 @@ export default function VilkarPage() {
           ]} />
         </Section>
 
-        <Section heading="3. Avtaleperiode og binding">
-          <p>
-            Efero leveres som et <strong style={{ color: '#00281f' }}>løpende månedsabonnement uten bindingstid</strong>.
-          </p>
-          <p>
-            Oppsigelse må skje skriftlig til{' '}
-            <a href="mailto:kontakt@efero.no" style={{ color: '#004c3a', textDecoration: 'underline', textUnderlineOffset: 2 }}>kontakt@efero.no</a>{' '}
-            før neste faktureringsperiode. Tilgangen varer ut perioden som allerede er betalt.
-          </p>
-          <p>
-            Prøveperioden på 30 dager er gratis og uforpliktende. Betalt abonnement starter bare etter uttrykkelig avtale.
-          </p>
-        </Section>
-
-        <Section heading="4. Pris og betaling">
+        <Section heading="3. Pris og betaling">
           <p>Gjeldende grunnpriser publiseres på efero.no/priser. Valgfrie moduler og øvrige tillegg avtales skriftlig før aktivering.</p>
           <p>
             Fakturering skjer månedlig eller årlig etter avtale. Betalingsfrist er 14 dager fra fakturadato.
@@ -67,13 +53,13 @@ export default function VilkarPage() {
           </p>
         </Section>
 
-        <Section heading="5. Etableringsgebyr">
+        <Section heading="4. Oppstart">
           <p>
-            Personlig standardoppsett er inkludert uten etableringsgebyr. Eventuelt særskilt konsulentarbeid eller datamigrering avtales og prises skriftlig på forhånd.
+            Vi hjelper deg personlig med oppsett og å komme i gang med Efero.
           </p>
         </Section>
 
-        <Section heading="6. Prøveperiode">
+        <Section heading="5. Prøveperiode">
           <p>
             Nye kunder får 30 dagers gratis prøveperiode uten betalingskort. Tilgjengelige funksjoner i prøveperioden følger avtalt prøveoppsett.
           </p>
@@ -82,7 +68,7 @@ export default function VilkarPage() {
           </p>
         </Section>
 
-        <Section heading="7. Tilgjengelighet">
+        <Section heading="6. Tilgjengelighet">
           <p>
             Vi tilstreber høy tilgjengelighet for tjenesten, men garanterer ikke 100% tilgjengelighet.
           </p>
@@ -91,19 +77,16 @@ export default function VilkarPage() {
           </p>
         </Section>
 
-        <Section heading="8. Dine data">
+        <Section heading="7. Dine data">
           <p>
             Du eier alle data du legger inn i Efero — kundedata, fakturaer, jobber og bilder.
           </p>
           <p>
-            Ved oppsigelse kan du eksportere dine data innen 30 dager etter avtalens slutt. Etter 30 dager slettes dataene.
-          </p>
-          <p>
-            Fakturaer oppbevares i 5 år i henhold til bokføringsloven, selv etter oppsigelse.
+            Fakturaer oppbevares i 5 år i henhold til bokføringsloven.
           </p>
         </Section>
 
-        <Section heading="9. Brukerbegrensninger">
+        <Section heading="8. Brukerbegrensninger">
           <p>Du forplikter deg til å ikke:</p>
           <List items={[
             'Dele innloggingsdetaljer med uautoriserte personer',
@@ -113,7 +96,7 @@ export default function VilkarPage() {
           ]} />
         </Section>
 
-        <Section heading="10. Ansvarsbegrensning">
+        <Section heading="9. Ansvarsbegrensning">
           <p>Efero er ikke ansvarlig for:</p>
           <List items={[
             'Indirekte tap eller følgeskader',
@@ -125,7 +108,7 @@ export default function VilkarPage() {
           </p>
         </Section>
 
-        <Section heading="11. Immaterielle rettigheter">
+        <Section heading="10. Immaterielle rettigheter">
           <p>
             Efero og alt innhold i tjenesten — programvare, design, logo og varemerker — eies av Efero.
           </p>
@@ -134,7 +117,7 @@ export default function VilkarPage() {
           </p>
         </Section>
 
-        <Section heading="12. Endringer i vilkårene">
+        <Section heading="11. Endringer i vilkårene">
           <p>
             Vi kan oppdatere disse vilkårene. Ved vesentlige endringer varsler vi deg på e-post minst 30 dager før endringen trer i kraft.
           </p>
@@ -143,23 +126,14 @@ export default function VilkarPage() {
           </p>
         </Section>
 
-        <Section heading="13. Oppsigelse fra vår side">
-          <p>Vi kan si opp avtalen med umiddelbar virkning dersom:</p>
-          <List items={[
-            'Du vesentlig misligholder disse vilkårene',
-            'Du ikke betaler innen 30 dager etter purring',
-            'Vi har rimelig grunn til å tro at tjenesten misbrukes',
-          ]} />
-        </Section>
-
-        <Section heading="14. Gjeldende lov og verneting">
+        <Section heading="12. Gjeldende lov og verneting">
           <p>Denne avtalen er underlagt norsk rett.</p>
           <p>
             Tvister søkes løst i minnelighet. Dersom dette ikke lykkes, er Kristiansand tingrett avtalt verneting.
           </p>
         </Section>
 
-        <Section heading="15. Kontakt" last>
+        <Section heading="13. Kontakt" last>
           <p>
             Spørsmål om vilkårene?{' '}
             <a href="mailto:kontakt@efero.no" style={{ color: '#004c3a', textDecoration: 'underline', textUnderlineOffset: 2 }}>kontakt@efero.no</a>

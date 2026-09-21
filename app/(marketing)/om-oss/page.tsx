@@ -21,7 +21,7 @@ const values = [
   {
     num: '02',
     title: 'Ærlighet',
-    text: 'Ingen skjulte kostnader. Ingen lange kontrakter. Du vet alltid hva du betaler og kan si opp når du vil.',
+    text: 'Ingen skjulte kostnader. Du vet alltid hva du betaler.',
   },
   {
     num: '03',
@@ -126,7 +126,7 @@ export default function OmOss() {
               Bli med oss
             </h2>
             <p className="mt-5 m-0 text-[16px] text-[#e4ece8] max-w-[36ch]">
-              Prøv Efero gratis i 30 dager. Personlig onboarding inkludert. Eller se{' '}
+              Prøv Efero gratis i 30 dager. Vi hjelper deg personlig i gang. Eller se{' '}
               <Link href="/kom-i-gang" className="underline underline-offset-2 text-[#f5f7f5]">
                 hvordan du kommer i gang
               </Link>

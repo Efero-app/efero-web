@@ -13,6 +13,7 @@ const pages: Array<{
   { path: '/jobbsjekk', changeFrequency: 'monthly', priority: 0.9 },
   { path: '/bransjer', changeFrequency: 'monthly', priority: 0.85 },
   { path: '/book-demo', changeFrequency: 'monthly', priority: 0.9 },
+  { path: '/partner', changeFrequency: 'monthly', priority: 0.6 },
   { path: '/venteliste', changeFrequency: 'weekly', priority: 0.95 },
   { path: '/om-oss', changeFrequency: 'monthly', priority: 0.8 },
   { path: '/faq', changeFrequency: 'monthly', priority: 0.8 },

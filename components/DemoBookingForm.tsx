@@ -1,8 +1,9 @@
 'use client'
 
 import Link from '@/components/SiteLink'
-import { useState } from 'react'
-import { DEMO_MODULES, START_TIMELINE_OPTIONS, TEAM_SIZE_OPTIONS } from '@/lib/demo-booking'
+import { useRef, useState } from 'react'
+import { buildPartnerDemoMessage, DEMO_MODULES, START_TIMELINE_OPTIONS, TEAM_SIZE_OPTIONS, validateDemoBooking } from '@/lib/demo-booking'
+import { isConfirmedIntake, shouldRetrySameIntake } from '@/lib/intake-response'
 
 type FormState = {
   name: string
@@ -31,11 +32,16 @@ const initialForm: FormState = {
 const inputClass = 'w-full min-h-12 rounded-[10px] border border-[#b9c9c1] bg-white px-4 text-[16px] text-ink placeholder:text-[#5a7268] outline-none transition focus:border-forest focus:ring-2 focus:ring-forest/15'
 const labelClass = 'text-[13px] font-semibold text-ink'
 
-export function DemoBookingForm() {
+export function DemoBookingForm({ initialPartner = '' }: { initialPartner?: string }) {
   const [form, setForm] = useState<FormState>(initialForm)
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
   const [errorMessage, setErrorMessage] = useState('')
+  const [partnerCode, setPartnerCode] = useState(initialPartner)
+  const [organizationNumber, setOrganizationNumber] = useState('')
+  const [partnerConsent, setPartnerConsent] = useState(false)
+  const [uncertain, setUncertain] = useState(false)
+  const partnerOperation = useRef<string | null>(null)
 
   const updateField = (field: keyof FormState, value: string) => {
     setForm(current => ({ ...current, [field]: value }))
@@ -67,22 +73,46 @@ export function DemoBookingForm() {
     event.preventDefault()
     if (status === 'sending') return
 
+    if (partnerCode.trim() && !partnerOperation.current) {
+      const validation = validateDemoBooking(form)
+      if (!validation.ok) { setFieldErrors(validation.errors); setStatus('error'); setErrorMessage('Kontroller feltene.'); return }
+      const message = buildPartnerDemoMessage(validation.data)
+      if (form.message.trim().length > 1500 || message.length > 2000) {
+        setFieldErrors({ message: 'Bruk maksimalt 1500 tegn når du oppgir partnerkode.' })
+        setStatus('error'); setErrorMessage('Kort ned meldingen før du sender.'); return
+      }
+      if (!/^[A-Z0-9][A-Z0-9-]{2,31}$/.test(partnerCode.trim().toUpperCase()) || !/^\d{9}$/.test(organizationNumber) || !partnerConsent) {
+        setStatus('error'); setErrorMessage('Kontroller partnerkoden, skriv ni sifre i organisasjonsnummeret og godta at vi kontakter deg.'); return
+      }
+      partnerOperation.current = JSON.stringify({ clientOperationId: crypto.randomUUID(),
+        partnerCode: partnerCode.trim().toUpperCase(), organizationNumber,
+        name: validation.data.name, company: validation.data.company, email: validation.data.email,
+        phone: validation.data.phone, consent: true, website: validation.data.website,
+        message,
+      })
+    }
+
     setStatus('sending')
     setFieldErrors({})
     setErrorMessage('')
 
     try {
-      const response = await fetch('/api/demo', {
+      const response = await fetch(partnerOperation.current ? '/api/partners/referrals' : '/api/demo', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: partnerOperation.current ?? JSON.stringify(form),
       })
       const result = await response.json().catch(() => ({})) as {
         error?: string
         fields?: Record<string, string>
       }
 
-      if (!response.ok) {
+      if (!response.ok || !isConfirmedIntake(result)) {
+        if (partnerOperation.current) {
+          const retrySame = shouldRetrySameIntake(response.status)
+          setUncertain(retrySame)
+          if (!retrySame) partnerOperation.current = null
+        }
         setFieldErrors(result.fields ?? {})
         setErrorMessage(result.error || 'Kunne ikke sende forespørselen. Prøv igjen.')
         setStatus('error')
@@ -90,7 +120,10 @@ export function DemoBookingForm() {
       }
 
       setStatus('success')
+      partnerOperation.current = null
+      setUncertain(false)
     } catch {
+      if (partnerOperation.current) setUncertain(true)
       setErrorMessage('Vi fikk ikke kontakt med serveren. Kontroller nettet og prøv igjen.')
       setStatus('error')
     }
@@ -112,6 +145,8 @@ export function DemoBookingForm() {
           type="button"
           onClick={() => {
             setForm(initialForm)
+            setOrganizationNumber('')
+            setPartnerConsent(false)
             setStatus('idle')
           }}
           className="min-h-12 rounded-full border border-[#b9c9c1] px-6 text-[15px] font-medium text-forest transition hover:border-forest hover:bg-[#eef2ef]"
@@ -124,6 +159,7 @@ export function DemoBookingForm() {
 
   return (
     <form onSubmit={handleSubmit} noValidate className="rounded-[18px] border border-[#b9c9c1] bg-white p-6 md:p-10" aria-label="Book en demo">
+      <fieldset disabled={status === 'sending' || uncertain}><legend className="sr-only">Demoforespørsel</legend>
       <div className="mb-9">
         <p className="font-mono text-[12px] uppercase tracking-[0.12em] text-[#3d5c52]">1 · Kontaktinformasjon</p>
         <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
@@ -179,16 +215,27 @@ export function DemoBookingForm() {
               {START_TIMELINE_OPTIONS.map(option => <option key={option} value={option}>{option}</option>)}
             </select>
           </FormField>
-          <FormField label="Noe vi bør vite før demoen?" htmlFor="demo-message" hint="Valgfritt">
-            <textarea id="demo-message" rows={5} className={`${inputClass} resize-y py-3`} value={form.message} onChange={event => updateField('message', event.target.value)} placeholder="Fortell gjerne om dagens arbeidsflyt, utfordringer eller systemer dere bruker." />
+          <FormField label="Noe vi bør vite før demoen?" htmlFor="demo-message" hint="Valgfritt" error={fieldErrors.message}>
+            <textarea id="demo-message" rows={5} maxLength={partnerCode ? 1500 : 2000} className={`${inputClass} resize-y py-3`} value={form.message} onChange={event => updateField('message', event.target.value)} placeholder="Fortell gjerne om dagens arbeidsflyt, utfordringer eller systemer dere bruker." />
           </FormField>
         </div>
       </div>
 
+      <div className="mb-8 space-y-4 rounded-xl border border-mist bg-[#eef5f1] p-5">
+        <FormField label="Har noen anbefalt Efero?" htmlFor="demo-partner" hint="Partnerkode er valgfritt">
+          <input id="demo-partner" className={inputClass} maxLength={32} value={partnerCode} onChange={event => setPartnerCode(event.target.value.toUpperCase())} />
+        </FormField>
+        {partnerCode && <>
+          <p className="text-sm leading-6">Henvisningen knyttes til partnerkoden. Partneren kan få provisjon hvis dere blir kunde. Efero tar all oppfølging.</p>
+          <FormField label="Organisasjonsnummer" htmlFor="demo-org" required><input id="demo-org" className={inputClass} inputMode="numeric" maxLength={9} value={organizationNumber} onChange={event => setOrganizationNumber(event.target.value.replace(/\s/g, ''))} /></FormField>
+          <label className="flex items-start gap-3 text-sm leading-6"><input type="checkbox" className="mt-1 size-5 shrink-0 accent-[#004c3a]" checked={partnerConsent} onChange={event => setPartnerConsent(event.target.checked)} /><span>Jeg samtykker til at Efero lagrer forespørselen med partnerkoden og kontakter meg om demoen.</span></label>
+        </>}
+      </div>
       <div className="absolute -left-[10000px] h-px w-px overflow-hidden" aria-hidden="true">
         <label htmlFor="demo-website">Nettside</label>
         <input id="demo-website" tabIndex={-1} autoComplete="off" value={form.website} onChange={event => updateField('website', event.target.value)} />
       </div>
+      </fieldset>
 
       {status === 'error' && (
         <div className="mb-5 rounded-[10px] border border-red-200 bg-red-50 px-4 py-3 text-[14px] text-red-800" role="alert">
@@ -198,7 +245,7 @@ export function DemoBookingForm() {
       )}
 
       <button type="submit" disabled={status === 'sending'} className="flex min-h-[54px] w-full items-center justify-center rounded-full bg-forest px-7 text-[16px] font-semibold text-white transition hover:bg-ink disabled:cursor-wait disabled:opacity-60">
-        {status === 'sending' ? 'Sender forespørselen…' : 'Send demoforespørsel'}
+        {status === 'sending' ? 'Sender forespørselen…' : uncertain ? 'Prøv samme innsending igjen' : 'Send demoforespørsel'}
       </button>
       <p className="mt-4 text-center text-[12px] leading-5 text-[#466158]">
         Ved å sende inn skjemaet godtar du at Efero kontakter deg om forespørselen. Se vår{' '}

@@ -32,8 +32,7 @@ export const OPTIONAL_MODULES = [
 
 export const PRICING_TERMS = {
   trial: '30 dager gratis uten betalingskort',
-  setup: 'Personlig oppstart uten etableringsgebyr',
-  cancellation: 'Månedsabonnement uten bindingstid',
+  setup: 'Personlig hjelp til oppstart',
   support: 'E-postsupport med svar innen én virkedag',
 } as const
 
