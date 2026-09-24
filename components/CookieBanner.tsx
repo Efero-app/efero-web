@@ -1,32 +1,35 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Link from '@/components/SiteLink'
-
-const STORAGE_KEY = 'efero_cookie_consent'
+import { ANALYTICS_CONSENT_KEY, CONSENT_SETTINGS, readAnalyticsConsent, saveAnalyticsConsent } from '@/lib/analytics-consent'
 
 export function CookieBanner() {
   const [visible, setVisible] = useState(false)
-  const [fading, setFading] = useState(false)
 
   useEffect(() => {
-    if (typeof window === 'undefined') return
-    const existing = localStorage.getItem(STORAGE_KEY)
-    if (!existing) {
-      const t = setTimeout(() => setVisible(true), 1000)
-      return () => clearTimeout(t)
+    setVisible(!readAnalyticsConsent())
+    const open = () => setVisible(true)
+    const storage = (event: StorageEvent) => {
+      if (event.key === ANALYTICS_CONSENT_KEY || event.key === null) setVisible(!readAnalyticsConsent())
+    }
+    window.addEventListener(CONSENT_SETTINGS, open)
+    window.addEventListener('storage', storage)
+    return () => {
+      window.removeEventListener(CONSENT_SETTINGS, open)
+      window.removeEventListener('storage', storage)
     }
   }, [])
 
   const dismiss = (value: 'accepted' | 'declined') => {
-    localStorage.setItem(STORAGE_KEY, value)
-    setFading(true)
-    setTimeout(() => setVisible(false), 300)
+    saveAnalyticsConsent(value)
+    setVisible(false)
   }
 
   if (!visible) return null
 
   return (
     <div
+      role="region" aria-label="Valg for informasjonskapsler"
       style={{
         position: 'fixed',
         bottom: 0,
@@ -35,8 +38,6 @@ export function CookieBanner() {
         zIndex: 9999,
         backgroundColor: '#00281f',
         borderTop: '2px solid #004c3a',
-        opacity: fading ? 0 : 1,
-        transition: 'opacity 0.3s ease',
       }}
     >
       <div style={{
@@ -54,7 +55,7 @@ export function CookieBanner() {
         {/* Text */}
         <div style={{ flex: 1, minWidth: 240 }}>
           <p style={{ color: 'rgba(255,255,255,0.92)', fontSize: 14, lineHeight: 1.6, margin: 0 }}>
-            Vi bruker kun nødvendige informasjonskapsler for innlogging og sesjonshåndtering. Ingen sporings- eller markedsføringscookies.
+            Med ditt samtykke bruker vi Google Analytics til å måle besøk og demoforespørsler på efero.no. Du kan avslå analyse og bruke siden som vanlig. Endre valget når som helst under «Informasjonskapsler» nederst på siden.
           </p>
           <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: 13, marginTop: 4, margin: '4px 0 0' }}>
             Les mer i vår{' '}
@@ -67,6 +68,7 @@ export function CookieBanner() {
         {/* Buttons */}
         <div className="cookie-buttons" style={{ display: 'flex', gap: 12, flexShrink: 0 }}>
           <button
+            type="button"
             onClick={() => dismiss('accepted')}
             style={{
               height: 44,
@@ -83,9 +85,10 @@ export function CookieBanner() {
             onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#003d2e')}
             onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#004c3a')}
           >
-            Godta
+            Godta analyse
           </button>
           <button
+            type="button"
             onClick={() => dismiss('declined')}
             style={{
               height: 44,
@@ -102,7 +105,7 @@ export function CookieBanner() {
             onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.9)')}
             onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.4)')}
           >
-            Avvis
+            Avslå analyse
           </button>
         </div>
       </div>

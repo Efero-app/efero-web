@@ -87,9 +87,11 @@ export function Footer() {
 
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 pt-10">
           <AppBadges />
+          <CookiePreferences />
           <p className="text-[13px] text-white/70 m-0">© 2026 Efero. Alle rettigheter forbeholdt.</p>
         </div>
       </div>
     </footer>
   )
 }
+import { CookiePreferences } from '@/components/CookiePreferences'

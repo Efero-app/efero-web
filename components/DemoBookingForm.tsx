@@ -4,6 +4,7 @@ import Link from '@/components/SiteLink'
 import { useRef, useState } from 'react'
 import { buildPartnerDemoMessage, DEMO_MODULES, START_TIMELINE_OPTIONS, TEAM_SIZE_OPTIONS, validateDemoBooking } from '@/lib/demo-booking'
 import { isConfirmedIntake, shouldRetrySameIntake } from '@/lib/intake-response'
+import { trackDemoConfirmed } from '@/lib/google-analytics'
 
 type FormState = {
   name: string
@@ -42,6 +43,7 @@ export function DemoBookingForm({ initialPartner = '' }: { initialPartner?: stri
   const [partnerConsent, setPartnerConsent] = useState(false)
   const [uncertain, setUncertain] = useState(false)
   const partnerOperation = useRef<string | null>(null)
+  const analyticsOperation = useRef<string | null>(null)
 
   const updateField = (field: keyof FormState, value: string) => {
     setForm(current => ({ ...current, [field]: value }))
@@ -72,6 +74,7 @@ export function DemoBookingForm({ initialPartner = '' }: { initialPartner?: stri
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (status === 'sending') return
+    analyticsOperation.current ??= crypto.randomUUID()
 
     if (partnerCode.trim() && !partnerOperation.current) {
       const validation = validateDemoBooking(form)
@@ -120,6 +123,9 @@ export function DemoBookingForm({ initialPartner = '' }: { initialPartner?: stri
       }
 
       setStatus('success')
+      try { trackDemoConfirmed(analyticsOperation.current) }
+      catch { /* Analytics must never turn a confirmed enquiry into a form error. */ }
+      analyticsOperation.current = null
       partnerOperation.current = null
       setUncertain(false)
     } catch {

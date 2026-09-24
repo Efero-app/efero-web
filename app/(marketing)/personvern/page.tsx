@@ -17,7 +17,7 @@ export default function PersonvernPage() {
           Personvernerklæring
         </h1>
         <p style={{ color: '#3d5c52', fontSize: 15, marginBottom: 56 }}>
-          Sist oppdatert: August 2026
+          Sist oppdatert: 24. september 2026
         </p>
 
         <Section heading="1. Hvem vi er">
@@ -32,6 +32,7 @@ export default function PersonvernPage() {
           <p>
             Vi er databehandler for dataene som lagres i tjenesten. Du som bedriftseier er behandlingsansvarlig for dine kunders og ansattes personopplysninger.
           </p>
+          <p>Efero er behandlingsansvarlig for besøksanalyse på markedsnettsiden efero.no.</p>
         </Section>
 
         <Section heading="2. Hvilke personopplysninger vi samler inn">
@@ -134,8 +135,11 @@ export default function PersonvernPage() {
 
         <Section heading="7. Informasjonskapsler (cookies)">
           <p>
-            Efero bruker kun nødvendige cookies for innlogging og sesjonshåndtering. Vi bruker ikke sporings- eller markedsføringscookies.
+            På efero.no bruker vi Google Analytics 4 bare dersom du godtar analyse. Formålet er å forstå antall besøk, hvilke sider som brukes, hvor besøk kommer fra og hvor mange demoforespørsler som sendes. Rettslig grunnlag for denne analysen er samtykket ditt.
           </p>
+          <p style={{ marginTop: 16 }}>Google mottar tekniske besøksdata og en pseudonym nettleseridentifikator. Vi sender ikke innholdet i skjemaene, navn, e-postadresse, telefonnummer eller partnerkode til Analytics. Annonsepersonalisering og Google-signaler er deaktivert i integrasjonen. Målingen gjelder markedsnettsiden, ikke innholdet i kundeappen eller superadmin.</p>
+          <p style={{ marginTop: 16 }}>Analyse bruker informasjonskapsler som starter med _ga, med inntil 180 dagers levetid i dette oppsettet. Valget ditt lagres i nettleseren i inntil 180 dager. Du kan når som helst endre eller trekke tilbake samtykket via «Informasjonskapsler» nederst på siden. Ved avslag lastes ikke Google Analytics. Tilbaketrekking stopper videre måling og fjerner analysecookies; den sletter ikke automatisk tidligere innsamlede opplysninger.</p>
+          <p style={{ marginTop: 16 }}>Leverandøren for besøksanalysen er Google. Opplysninger kan behandles utenfor EØS. Les om <a href="https://policies.google.com/technologies/partner-sites" style={{ color: '#004c3a', textDecoration: 'underline' }}>Googles behandling av data fra nettsteder som bruker tjenestene deres</a>. Kontakt oss hvis du har spørsmål om besøksdata eller ønsker å bruke rettighetene dine.</p>
         </Section>
 
         <Section heading="8. Sikkerhet">
